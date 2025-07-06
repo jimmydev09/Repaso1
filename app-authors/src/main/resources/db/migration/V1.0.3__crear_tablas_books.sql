@@ -20,3 +20,8 @@ ALTER TABLE inventory
 
 ALTER TABLE books_authors
     ADD CONSTRAINT FK_BOOKS_AUTHORS_ON_BOOKS FOREIGN KEY (books_isbn) REFERENCES books (isbn);
+
+INSERT INTO public.books(isbn, title, price, version) VALUES
+                                                          ('978-0134685991', 'Effective Java',        50.00, 1),
+                                                          ('978-1492056355', 'MicroProfile Cookbook', 39.99, 1),
+                                                          ('978-1617292545', 'Spring in Action',      44.95, 1);

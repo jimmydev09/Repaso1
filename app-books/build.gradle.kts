@@ -38,8 +38,12 @@ dependencies {
     implementation("org.modelmapper:modelmapper:3.2.3")
 
     //Service Discovery
+//    implementation("io.quarkus:quarkus-smallrye-stork")
+//    implementation("io.smallrye.stork:stork-service-discovery-static-list")
+
+//Service Discovery Dinamico
     implementation("io.quarkus:quarkus-smallrye-stork")
-    implementation("io.smallrye.stork:stork-service-discovery-static-list")
+    implementation("io.smallrye.stork:stork-service-discovery-consul")
 }
 
 tasks.withType<JavaCompile> {

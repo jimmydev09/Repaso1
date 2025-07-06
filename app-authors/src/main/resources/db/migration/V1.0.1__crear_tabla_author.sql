@@ -9,3 +9,4 @@ CREATE TABLE public.authors
 insert into authors(name, version) values('author1', 1);
 insert into authors(name, version) values('author2', 1);
 insert into authors(name, version) values('author3', 1);
+insert into authors(name, version) values('author4', 1);
