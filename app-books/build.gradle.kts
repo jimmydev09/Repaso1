@@ -44,6 +44,8 @@ dependencies {
 //Service Discovery Dinamico
     implementation("io.quarkus:quarkus-smallrye-stork")
     implementation("io.smallrye.stork:stork-service-discovery-consul")
+    //Vertex Consul Client
+    implementation("io.smallrye.reactive:smallrye-mutiny-vertx-consul-client")
 }
 
 tasks.withType<JavaCompile> {
