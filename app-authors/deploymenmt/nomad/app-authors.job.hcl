@@ -4,9 +4,9 @@ job "app-authors" {
 
   group "app-authors" {
     count = 1
+
     network {
       port "http" {
-        static = 8083
       }
     }
 
@@ -22,8 +22,8 @@ job "app-authors" {
       }
 
       resources {
-        cpu    = 2000  # 2000 MHz (aprox. 2 vCPU)
-        memory = 1024  # en MB, 1 GB
+        cpu    = 2000 # 5000 MHz
+        memory = 1024 # 1 GB
       }
 
       service {
