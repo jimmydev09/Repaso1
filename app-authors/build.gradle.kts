@@ -19,6 +19,7 @@ java {
 }
 
 dependencies {
+
     implementation(enforcedPlatform("io.quarkus.platform:quarkus-bom:${quarkusVersion}"))
 
     //CDI
@@ -42,6 +43,9 @@ dependencies {
 
     //Vertex Consul Client
     implementation("io.smallrye.reactive:smallrye-mutiny-vertx-consul-client")
+
+    //Resilience
+    implementation("io.quarkus:quarkus-smallrye-fault-tolerance")
 }
 
 tasks.withType<JavaCompile> {

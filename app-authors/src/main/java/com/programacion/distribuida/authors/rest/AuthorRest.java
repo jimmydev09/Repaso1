@@ -13,6 +13,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperties;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Path("/authors")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,6 +27,8 @@ public class AuthorRest {
 
     @Inject
     AuthorRepository authorRepository;
+
+    AtomicInteger index = new AtomicInteger(1);
 
     @GET
     @Path("/{id}")
@@ -47,6 +50,15 @@ public class AuthorRest {
     @GET
     @Path("/find/{isbn}")
     public List<Author> findByBook(@PathParam("isbn") String isbn) {
+
+        //generar errores
+        int valor = index.getAndIncrement();
+        if (valor%2 ==0) {
+            String msg = String.format("Intento %d, genera error", valor);
+            System.out.println("author********************"+msg);
+            throw new RuntimeException("Error de prueba");
+        }
+
 
 //        Config config = ConfigProvider.getConfig();
 //        var puerto = config.getValue("quarkus.http.port", Integer.class);
