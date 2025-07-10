@@ -46,6 +46,9 @@ dependencies {
 
     //Resilience
     implementation("io.quarkus:quarkus-smallrye-fault-tolerance")
+
+    //health check
+    implementation("io.quarkus:quarkus-smallrye-health")
 }
 
 tasks.withType<JavaCompile> {

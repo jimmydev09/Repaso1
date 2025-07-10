@@ -51,25 +51,18 @@ public class AuthorRest {
     @Path("/find/{isbn}")
     public List<Author> findByBook(@PathParam("isbn") String isbn) {
 
-        //generar errores
-        int valor = index.getAndIncrement();
-        if (valor%5 !=0) {
-            String msg = String.format("Intento %d, genera error", valor);
-            System.out.println("author********************"+msg);
-            throw new RuntimeException("Error de prueba");
-        }
 
 
 //        Config config = ConfigProvider.getConfig();
 //        var puerto = config.getValue("quarkus.http.port", Integer.class);
 
-//        Config config = ConfigProvider.getConfig();
-//        config.getConfigSources()
-//                .forEach(
-//                        obj ->
-//                                System.out.printf("%d -> %s\n", obj.getOrdinal(), obj.getName())
-//
-//                );
+       Config config = ConfigProvider.getConfig();
+        config.getConfigSources()
+                .forEach(
+                     obj ->
+                                System.out.printf("%d -> %s\n", obj.getOrdinal(), obj.getName())
+
+                );
 
         var ret = authorRepository.findByBook(isbn);
         return ret.stream()

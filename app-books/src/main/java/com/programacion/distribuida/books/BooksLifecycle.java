@@ -57,7 +57,7 @@ public class BooksLifecycle {
 
         var CheckOptions = new CheckOptions()
                 //.setHttp("http://127.0.0.1:9090/ping")
-                .setHttp(String.format("http://%s:%d/ping", ipAddress.getHostAddress(), appPort))
+                .setHttp(String.format("http://%s:%d/q/health/live", ipAddress.getHostAddress(), appPort))
                 .setInterval("10s")
                 .setDeregisterAfter("20s");
 
