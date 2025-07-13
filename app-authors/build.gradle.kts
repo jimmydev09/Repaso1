@@ -49,6 +49,12 @@ dependencies {
 
     //health check
     implementation("io.quarkus:quarkus-smallrye-health")
+
+    //Telemetrics: metricas prometheus
+    implementation("io.quarkus:quarkus-micrometer-registry-prometheus")
+    //JACKSON
+    implementation("io.quarkus:quarkus-jackson")
+
 }
 
 tasks.withType<JavaCompile> {

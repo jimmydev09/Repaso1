@@ -4,15 +4,13 @@ services:
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: "labcom,2025"
+      POSTGRES_PASSWORD: "labcom,2015"
       POSTGRES_DB: distribuidaclases
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - "c:/db-distribuida:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
-    expose:
-      - "5432"
 
   consul:
     image: consul:1.15.4
@@ -23,25 +21,6 @@ services:
       -client 0.0.0.0
     ports:
       - "8500:8500"
-    expose:
-      - "8500"
-
-  proxy:
-    image: traefik:3.4.1
-    command:
-      --api.insecure=true
-      --api.dashboard=true
-      --providers.consulCatalog
-      --providers.consulCatalog.refreshInterval=15s
-      --providers.consulCatalog.exposedByDefault=false
-      --providers.consulCatalog.endpoint.address=consul:8500
-    ports:
-      - "8888:8080"
-      - ":80"
-    expose:
-      - 80
-    depends_on:
-      - consul
 
   authors:
     image: jimmyortega/app-authors:latest
@@ -51,21 +30,11 @@ services:
       QUARKUS_DATASOURCE_USERNAME: postgres
       QUARKUS_DATASOURCE_PASSWORD: "labcom,2015"
       QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://dbserver:5432/distribuidaclases
+      QUARKUS_HTTP_HOST: 0.0.0.0
       QUARKUS_HTTP_PORT: 8080
-      QUARKUS_HOST: consul
-
-      QUARKUS_PORT: 8500
 
       CONSUL_HOST: consul
       CONSUL_PORT: "8500"
-
-    deploy:
-      replicas: 1
-    expose:
-      - 8080
-
     depends_on:
       - dbserver
       - consul
-
-

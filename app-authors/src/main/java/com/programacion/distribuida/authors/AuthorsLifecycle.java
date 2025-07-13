@@ -36,43 +36,50 @@ public class AuthorsLifecycle {
     void init(@Observes StartupEvent event, Vertx vertx) throws Exception {
         System.out.println("Starting Authors service...");
 
-        ConsulClientOptions options = new ConsulClientOptions()
-                .setHost(consulHost)
-                .setPort(consulPort);
 
-        ConsulClient consulClient = ConsulClient.create(vertx, options);
+        try {
+            ConsulClientOptions options = new ConsulClientOptions()
+                    .setHost(consulHost)
+                    .setPort(consulPort);
 
-        serviceId = UUID.randomUUID().toString();
-        var ipAddress = InetAddress.getLocalHost();
+            ConsulClient consulClient = ConsulClient.create(vertx, options);
 
-        //--registro
-        var tags = List.of(
-            "traefik.enable=true",
-                //PathPrefix
-            "traefik.http.routers.app-authors.rule=PathPrefix(`/authors`)",
-            "traefik.http.routers.app-authors.middlewares=strip-prefix-authors",
-            "traefik.http.middlewares.strip-prefix-authors.stripPrefix.prefixes=/app-authors"
-        );
+            serviceId = UUID.randomUUID().toString();
+            var ipAddress = InetAddress.getLocalHost();
 
-        var CheckOptions = new CheckOptions()
-                //.setHttp("http://127.0.0.1:8080/ping")
-                .setHttp(String.format("http://%s:%d/q/health/live", ipAddress.getHostAddress(), appPort))
-                .setInterval("10s")
-                .setDeregisterAfter("20s");
+            //--registro
+            var tags = List.of(
+                    "traefik.enable=true",
+                    //PathPrefix
+                    "traefik.http.routers.app-authors.rule=PathPrefix(`/authors`)",
+                    "traefik.http.routers.app-authors.middlewares=strip-prefix-authors",
+                    "traefik.http.middlewares.strip-prefix-authors.stripPrefix.prefixes=/app-authors"
+            );
 
-
-
-        ServiceOptions serviceOptions = new ServiceOptions()
-                .setName("app-authors")
-                .setId(serviceId)
-                .setAddress(ipAddress.getHostAddress())
-                .setPort(appPort)
-                .setTags(tags)
-                .setCheckOptions(CheckOptions);
+            var CheckOptions = new CheckOptions()
+                    //.setHttp("http://127.0.0.1:8080/ping")
+                    .setHttp(String.format("http://%s:%d/q/health/live", ipAddress.getHostAddress(), appPort))
+                    .setInterval("10s")
+                    .setDeregisterAfter("20s");
 
 
-        consulClient.registerServiceAndAwait(serviceOptions);
-    }
+            ServiceOptions serviceOptions = new ServiceOptions()
+                    .setName("app-authors")
+                    .setId(serviceId)
+                    .setAddress(ipAddress.getHostAddress())
+                    .setPort(appPort)
+                    .setTags(tags)
+                    .setCheckOptions(CheckOptions);
+
+
+            consulClient.registerServiceAndAwait(serviceOptions);
+        }catch (Exception e) {
+            System.err.println("Error during Authors service initialization: " + e.getMessage());
+        }finally {
+            System.out.println("Authors service initialization completed.");
+        }
+
+        }
 
     void stop(@Observes ShutdownEvent event, Vertx vertx) {
         System.out.println("Stopping Authors service...");
