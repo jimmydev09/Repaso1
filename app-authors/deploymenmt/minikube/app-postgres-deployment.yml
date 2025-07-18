@@ -1,0 +1,50 @@
+---
+# postgres.yml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbserver
+  labels:
+    app: dbserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbserver
+  template:
+    metadata:
+      labels:
+        app: dbserver
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:13
+          # Inicializa la BD, usuario y password para que coincidan con tu app-authors
+          env:
+            - name: POSTGRES_DB
+              value: "distribuida"
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgdata
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbserver
+spec:
+  type: ClusterIP
+  selector:
+    app: dbserver
+  ports:
+    - port: 5432
+      targetPort: 5432
