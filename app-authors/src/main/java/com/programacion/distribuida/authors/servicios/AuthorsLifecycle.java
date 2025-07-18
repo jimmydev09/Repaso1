@@ -1,5 +1,4 @@
-package com.programacion.distribuida.authors;
-
+package com.programacion.distribuida.authors.servicios;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import io.vertx.ext.consul.CheckOptions;
@@ -79,7 +78,7 @@ public class AuthorsLifecycle {
             System.out.println("Authors service initialization completed.");
         }
 
-        }
+    }
 
     void stop(@Observes ShutdownEvent event, Vertx vertx) {
         System.out.println("Stopping Authors service...");
